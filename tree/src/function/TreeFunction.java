@@ -2,12 +2,79 @@ package function;
 
 import bean.Node;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author 24412
  */
 public class TreeFunction {
+
+    /**
+     * 二叉树的比较 (如果左右互换可以的话)
+    * */
+    public static boolean compareTree(Node node1,Node node2){
+        if (node1==null && node2 == null) {
+            return true;
+        }
+        if (node1 == null || node2 == null){
+            return false;
+        }
+        if (node1.getVal() != node2.getVal()) {
+            return false;
+        }
+        return compareTree(node1.getLeft(),node2.getLeft())&&compareTree(node1.getRight(),node2.getRight());
+    }
+    /**
+     * 二叉树深度优先搜索
+    * */
+    public static boolean dfs(Node root, int target){
+        if (root == null) {
+            return false;
+        }
+        if (root.getVal() == target) {
+            return true;
+        }
+        return dfs(root.getLeft(),target) || dfs(root.getRight(),target);
+    }
+
+    /**
+     * 二叉树广度优先搜索
+    * */
+    public static boolean bfs(Node root, int target){
+        if (root == null) {
+            return false;
+        }
+        if (root.getVal() == target) {
+            return true;
+        }
+        List<Node> nodeList = new ArrayList<>();
+        nodeList.add(root);
+        return bfs(nodeList,target);
+    }
+
+    private static boolean bfs(List<Node> nodes, int target){
+        if (nodes.size()==0){
+            return false;
+        }
+        List<Node> children = new ArrayList<>();
+        for (int i = 0; i < nodes.size(); i++) {
+            Node n = nodes.get(i);
+            if (n.getVal() == target) {
+                return true;
+            }
+            if (n.getLeft() != null) {
+                children.add(n.getLeft());
+            }
+            if (n.getRight() != null) {
+                children.add(n.getRight());
+            }
+        }
+        return bfs(children,target);
+    }
+
+
 
     /**
     * 前序遍历和中序遍历还原二叉树
@@ -38,7 +105,9 @@ public class TreeFunction {
 
     }
 
-
+    /**
+     * 三种遍历 前序 中序 后序
+     * */
     public static void firstRoot(Node root){
         if (root == null) {
             return;
@@ -83,10 +152,30 @@ public class TreeFunction {
         n1.setLeft(n5);
         n1.setRight(n7);
 
+        Node na = new Node(6);
+        Node nb = new Node(5);
+        Node nc = new Node(1);
+        Node nd = new Node(7);
+        Node ne = new Node(9);
+        Node nf = new Node(12);
+        Node ng = new Node(8);
+        Node nh = new Node(11);
 
-        int[] first = new int[]{5,7,1,12,6,9,8};
-        int[] mid = new int[]{1,7,12,5,9,6,8};
-        Node ret = fmToTree(first,mid);
-        firstRoot(ret);
+        nb.setLeft(nd);
+        nb.setRight(na);
+        nd.setLeft(nc);
+        nd.setRight(nf);
+        na.setLeft(ne);
+        na.setRight(ng);
+        ng.setRight(nh);
+
+
+//        System.out.println(dfs(n2,9));
+//        System.out.println(bfs(n2,11));
+        System.out.println(compareTree(nb,n2));
+//        int[] first = new int[]{5,7,1,12,6,9,8};
+////        int[] mid = new int[]{1,7,12,5,9,6,8};
+////        Node ret = fmToTree(first,mid);
+////        firstRoot(ret);
     }
 }
